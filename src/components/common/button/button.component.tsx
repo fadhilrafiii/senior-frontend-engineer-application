@@ -33,7 +33,7 @@ const Button = ({
     <button
       {...props}
       type={type}
-      className={`flex items-center justify-center gap-2 text-sm py-2 px-3 rounded-md bor border font-medium min-w-[100px] h-10 $ ${getThemeClass()} {className}`}
+      className={`flex items-center justify-center gap-2 text-sm py-2 px-3 rounded-md bor border font-medium min-w-[100px] h-10 $ ${getThemeClass()} ${className}`}
     >
       {children}
     </button>

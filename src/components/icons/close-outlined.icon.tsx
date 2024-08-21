@@ -1,6 +1,6 @@
 import { IconProps } from './common';
 
-const CloseOutlineIcon = ({ color = '#fff', size = 24, ...props }: IconProps) => {
+const CloseOutlinedIcon = ({ color = '#fff', size = 24, ...props }: IconProps) => {
   return (
     <svg
       {...props}
@@ -15,4 +15,4 @@ const CloseOutlineIcon = ({ color = '#fff', size = 24, ...props }: IconProps) =>
   );
 };
 
-export default CloseOutlineIcon;
+export default CloseOutlinedIcon;

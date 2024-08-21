@@ -1,4 +1,18 @@
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { useEffect, useState } from 'react';
+
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  PaginationState,
+  useReactTable,
+} from '@tanstack/react-table';
+import { useSearchParams } from 'react-router-dom';
+
+import Pagination from './pagination.component';
 
 import NotFoundWebp from '@assets/not-found.webp';
 
@@ -9,13 +23,52 @@ interface IProps<T> {
 }
 
 const Table = <T,>({ columns, data }: IProps<T>) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialPageIndex = searchParams.get('pageIndex');
+  const initialPageSize = searchParams.get('pageSize');
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: parseInt(initialPageIndex || '0'),
+    pageSize: parseInt(initialPageSize || '10'),
+  });
+
+  useEffect(() => {
+    if (!initialPageIndex) {
+      searchParams.set('pageIndex', '0');
+      setSearchParams(searchParams);
+    }
+
+    if (!initialPageSize) {
+      searchParams.set('pageSize', '10');
+      setSearchParams(searchParams);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const table = useReactTable({
     columns,
     data,
-    rowCount: data.length,
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    state: {
+      pagination,
+    },
   });
+
+  const handleChangePage = (page: number) => {
+    table.setPageIndex(page);
+    searchParams.set('pageIndex', page.toString());
+    setSearchParams(searchParams);
+  };
+
+  const handleChangePageSize = (pageSize: number) => {
+    table.setPageSize(pageSize);
+    searchParams.set('pageSize', pageSize.toString());
+    setSearchParams(searchParams);
+  };
 
   const { rows } = table.getRowModel();
 
@@ -66,7 +119,7 @@ const Table = <T,>({ columns, data }: IProps<T>) => {
                       style={{
                         width: cell.column.getSize(),
                       }}
-                      className="px-2 py-3 text-sm"
+                      className="px-2 py-4 text-sm"
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
@@ -76,6 +129,18 @@ const Table = <T,>({ columns, data }: IProps<T>) => {
             ))}
         </tbody>
       </table>
+      <div className="bg-slate-200">
+        <Pagination
+          currentPage={table.getState().pagination.pageIndex + 1}
+          totalData={data.length}
+          totalPage={table.getPageCount()}
+          pageSize={table.getState().pagination.pageSize}
+          canGoNext={table.getCanNextPage()}
+          canGoBack={table.getCanPreviousPage()}
+          onChangePage={handleChangePage}
+          onChangePageSize={handleChangePageSize}
+        />
+      </div>
     </div>
   );
 };

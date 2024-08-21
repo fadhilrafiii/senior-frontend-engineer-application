@@ -37,7 +37,7 @@ const IconButton = ({
     <button
       {...props}
       type={type}
-      className={`${getThemeClass()} rounded-full transition-all p-2 ${className}`}
+      className={`${getThemeClass()} cursor-pointer rounded-full transition-all p-2 ${className}`}
     >
       <Icon
         size={size}
