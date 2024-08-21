@@ -74,7 +74,8 @@ export default [
             ['^react$'],
             ['^@?\\w'], // Third party
             ['^@components([/].+)?$', '^@libs([/].+)?$'],
-            ['^@constants([/].+)?$']['^\\.'], // Relative imports
+            ['^@constants([/].+)?$'],
+            ['^\\.'], // Relative imports
             ['.*.scss$'], // Assets
             ['^@assets([/].+)?$'], // Assets
           ],

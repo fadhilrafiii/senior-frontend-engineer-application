@@ -13,6 +13,7 @@ export interface IAnamnesisFormQuestion {
 
 export interface IAnamnesisFormSection {
   id: string;
+  name: string;
   questions: IAnamnesisFormQuestion[];
 }
 
@@ -21,5 +22,11 @@ export interface IAnamnesisForm {
   title: string;
   description: string;
   createdAt: Date;
+  sections: IAnamnesisFormSection[];
+}
+
+export interface IAnamnesisFormData {
+  title: string;
+  description: string;
   sections: IAnamnesisFormSection[];
 }

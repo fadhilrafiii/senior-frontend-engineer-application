@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 
 import { IMenu } from '@libs/types/menu.type';
+
 import { MENUS } from '@constants/menu.constant';
 
 const Sidebar = () => {

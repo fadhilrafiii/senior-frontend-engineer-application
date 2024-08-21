@@ -2,13 +2,13 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack
 
 import NotFoundWebp from '@assets/not-found.webp';
 
-interface Props<T> {
+interface IProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
   isLoading?: boolean;
 }
 
-const Table = <T,>({ columns, data }: Props<T>) => {
+const Table = <T,>({ columns, data }: IProps<T>) => {
   const table = useReactTable({
     columns,
     data,

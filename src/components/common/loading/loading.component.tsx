@@ -1,11 +1,11 @@
 import { Color } from '@libs/types/color.type';
 
-interface Props {
+interface IProps {
   size?: number;
   color?: Color | string;
 }
 
-const Loading = ({ size = 32, color = Color.Primary }: Props) => {
+const Loading = ({ size = 32, color = Color.Primary }: IProps) => {
   return (
     <div className="text-center">
       <div role="status">

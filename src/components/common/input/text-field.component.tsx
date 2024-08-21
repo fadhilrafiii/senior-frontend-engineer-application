@@ -4,7 +4,7 @@ import { Color } from '@libs/types/color.type';
 
 import { IconProps } from '../../icons/common';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   helperText?: string;
   error?: string;
@@ -20,7 +20,7 @@ const TextField = ({
   StartIcon,
   EndIcon,
   ...props
-}: Props) => {
+}: IProps) => {
   return (
     <div className={`flex flex-col gap-1 ${className}`}>
       {label && <label className="text-sm">{label}</label>}

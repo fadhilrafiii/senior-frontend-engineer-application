@@ -14,6 +14,7 @@ import TrashOutlinedIcon from '@components/icons/trash-outlined.icon';
 import useDebounce from '@libs/hooks/use-debounce.hook';
 import useLocalStorage from '@libs/hooks/use-local-storage.hook';
 import { IAnamnesisForm } from '@libs/types/anamnesis.type';
+
 import { ANAMNESIS_STORAGE_KEY } from '@constants/key.constant';
 
 const AnamnesisListPage = () => {
@@ -72,7 +73,7 @@ const AnamnesisListPage = () => {
           cell: ({ row }) => {
             return (
               <div className="flex items-center justify-center gap-2">
-                <Link to={row.id}>
+                <Link to={row.original.id}>
                   <IconButton Icon={EyeOutlineIcon} theme={IconButton.Theme.Secondary} />
                 </Link>
                 <IconButton

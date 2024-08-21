@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import { IMenu } from '@libs/types/menu.type';
 import { getTitleCase } from '@libs/utils/string.util';
+
 import { MENUS } from '@constants/menu.constant';
 
 import Sidebar from './sidebar.component';

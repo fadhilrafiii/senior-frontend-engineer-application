@@ -1,5 +1,7 @@
+import AnamnesisForm from '@components/anamnesis-form/anamnesis-form.component';
+
 const AnamnesisCreatePage = () => {
-  return <div>Anamnesis Create</div>;
+  return <AnamnesisForm />;
 };
 
 export default AnamnesisCreatePage;

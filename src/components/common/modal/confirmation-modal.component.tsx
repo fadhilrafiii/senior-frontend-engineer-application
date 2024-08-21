@@ -5,7 +5,7 @@ import Button from '../button/button.component';
 
 import QuestionMarkWebp from '@assets/question-mark.webp';
 
-interface Props {
+interface IProps {
   title: string;
   danger?: boolean;
   description: string;
@@ -25,7 +25,7 @@ const ConfirmationModal = ({
   confirmText = 'Confirm',
   onClose,
   onConfirm,
-}: Props) => {
+}: IProps) => {
   return (
     <div
       className={`${open ? 'fixed' : 'hidden'} inset-0 bg-slate-700 bg-opacity-30 flex items-center justify-center`}
