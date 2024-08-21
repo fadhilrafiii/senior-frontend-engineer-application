@@ -2,8 +2,8 @@ import { Suspense } from 'react';
 
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import Layout from '@components/layout/layout.component';
-import LoadingScreen from '@components/loading/loading-screen.component';
+import Layout from '@components/common/layout/layout.component';
+import LoadingScreen from '@components/common/loading/loading-screen.component';
 
 import AnamnesisCreatePage from './pages/anamnesis/create/anamnesis-create.page';
 import AnamnesisDetailPage from './pages/anamnesis/detail/anamnesis-detail.page';

@@ -1,4 +1,4 @@
-import { Color } from '@libs/enums/color.enum';
+import { Color } from '@libs/types/color.type';
 
 interface Props {
   size?: number;

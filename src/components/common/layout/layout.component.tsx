@@ -13,8 +13,12 @@ const Layout = () => {
 
   const title = useMemo(() => {
     const splittedPathname = pathname.slice(1).split('/').slice(-3);
-    const action = getTitleCase(splittedPathname[splittedPathname.length - 1]);
-    const detailPath = splittedPathname.length > 2 ? splittedPathname[1] : '';
+    const action =
+      splittedPathname.length > 1
+        ? getTitleCase(splittedPathname[splittedPathname.length - 1])
+        : '';
+    const detailPath =
+      splittedPathname.length > 2 ? splittedPathname[splittedPathname.length - 2] : '';
     const currentMenu = MENUS.find((menu: IMenu) => menu.url.slice(1) === splittedPathname[0]);
 
     const mainTitle = currentMenu?.label || getTitleCase(splittedPathname[0]);
@@ -25,9 +29,9 @@ const Layout = () => {
   return (
     <div className="w-full flex">
       <Sidebar />
-      <div className="flex-grow p-8">
+      <div className="flex-grow flex flex-col p-8 gap-8">
         <h1 className="text-2xl font-semibold">{title}</h1>
-        <main className="py-4">
+        <main className="flex-grow">
           <Outlet />
         </main>
       </div>

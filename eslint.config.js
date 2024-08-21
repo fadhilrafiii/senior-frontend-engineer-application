@@ -51,13 +51,20 @@ export default [
         },
       ],
       'unused-imports/no-unused-imports': 'error',
-      'unused-imports/no-unused-vars': [
-        'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
         {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'after-used',
           argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+      'unused-imports/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
         },
       ],
       'simple-import-sort/imports': [
