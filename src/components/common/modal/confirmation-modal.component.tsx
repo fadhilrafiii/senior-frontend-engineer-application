@@ -7,6 +7,7 @@ import QuestionMarkWebp from '@assets/question-mark.webp';
 
 interface Props {
   title: string;
+  danger?: boolean;
   description: string;
   maxWidth?: number;
   open: boolean;
@@ -18,6 +19,7 @@ interface Props {
 const ConfirmationModal = ({
   open,
   title,
+  danger = false,
   description,
   maxWidth = 360,
   confirmText = 'Confirm',
@@ -35,13 +37,13 @@ const ConfirmationModal = ({
         </header>
         <div className="p-4 flex flex-col items-center justify-center gap-2">
           <img src={QuestionMarkWebp} alt="Confirm" width={120} height={120} />
-          <p className="text-sm">{description}</p>
+          <p className="text-sm text-center">{description}</p>
         </div>
         <footer className="p-4 flex gap-2 items-center justify-center border-t">
           <Button onClick={onClose} theme={Button.Theme.Secondary}>
             Cancel
           </Button>
-          <Button onClick={onConfirm} theme={Button.Theme.Primary}>
+          <Button onClick={onConfirm} theme={danger ? Button.Theme.Danger : Button.Theme.Primary}>
             {confirmText}
           </Button>
         </footer>

@@ -79,7 +79,7 @@ const AnamnesisListPage = () => {
                   Icon={TrashOutlinedIcon}
                   theme={IconButton.Theme.Secondary}
                   iconClassName="fill-red-700"
-                  onClick={() => actionClickDelete(row.id)}
+                  onClick={() => actionClickDelete(row.original.id)}
                 />
               </div>
             );
@@ -110,6 +110,7 @@ const AnamnesisListPage = () => {
       {/* Delete confirmation Modal */}
       <ConfirmationModal
         open={!!deleteId}
+        danger
         title="Delete Anamnesis Form"
         description={`Are you sure to delete anamnesis form ${deleteId} ?`}
         confirmText="Yes, Delete"

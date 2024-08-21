@@ -17,7 +17,7 @@ export interface IAnamnesisFormSection {
 }
 
 export interface IAnamnesisForm {
-  id?: string;
+  id: string;
   title: string;
   description: string;
   createdAt: Date;

@@ -3,6 +3,7 @@ import { HTMLAttributes, ReactNode } from 'react';
 enum ButtonTheme {
   Primary = 'Primary',
   Secondary = 'Secondary',
+  Danger = 'Danger',
 }
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
@@ -16,6 +17,8 @@ const Button = ({ theme = ButtonTheme.Primary, children, className = '', ...prop
       return 'bg-primary text-white border-primary hover:bg-slate-600';
     if (theme === ButtonTheme.Secondary)
       return 'bg-white text-primary border-primary hover:bg-slate-100';
+    if (theme === ButtonTheme.Danger)
+      return 'bg-red-700 text-white border-red-700 hover:bg-red-600';
   };
 
   return (
