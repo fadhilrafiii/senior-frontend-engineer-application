@@ -18,6 +18,7 @@ interface IProps extends HTMLAttributes<HTMLDivElement> {
   onChangeQuestion: (questionId: string, value: string) => void;
   onChangeQuestionType: (questionId: string, value: string) => void;
   onSwapQuestion: (questions: IAnamnesisFormQuestion[]) => void;
+  onDeleteQuestion: (questionId: string) => void;
   onDeleteSection: () => void;
 }
 
@@ -28,6 +29,7 @@ const AnamnesisFormSection = ({
   onChangeQuestion,
   onChangeQuestionType,
   onSwapQuestion,
+  onDeleteQuestion,
   onDeleteSection,
   className = '',
 }: IProps) => {
@@ -49,7 +51,7 @@ const AnamnesisFormSection = ({
       <header className="flex items-center justify-between">
         {canEditSectionName ? (
           <TextField
-            className="min-w-[300px]"
+            className="min-w-[300px] leading-[40px]"
             placeholder="Enter section name (Enter to Commit)"
             value={sectionName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSectionName(e.target.value)}
@@ -57,7 +59,7 @@ const AnamnesisFormSection = ({
           />
         ) : (
           <div className="flex gap-2 items-center">
-            <h4 className="font-medium">{section.name}</h4>
+            <h4 className="font-medium leading-[40px]">{section.name}</h4>
             <EditFilledIcon
               role="button"
               color={Color.Primary}
@@ -79,18 +81,24 @@ const AnamnesisFormSection = ({
           items={section.questions}
           onChange={onSwapQuestion}
           renderItem={(question: IAnamnesisFormQuestion) => (
-            <Sortable.Item id={question.id}>
+            <Sortable.Item key={question.id} id={question.id}>
               <Sortable.DragHandle />
               <AnamnesisFormQuestion
                 className="mb-6 pb-6 border-b"
                 question={question}
                 onChangeQuestion={(value: string) => onChangeQuestion(question.id, value)}
                 onChangeQuestionType={(type: string) => onChangeQuestionType(question.id, type)}
+                onDeleteQuestion={() => onDeleteQuestion(question.id)}
               />
             </Sortable.Item>
           )}
         />
-        <Button type="button" theme={Button.Theme.Link} onClick={() => onAddQuestion()}>
+        <Button
+          type="button"
+          theme={Button.Theme.Link}
+          onClick={() => onAddQuestion()}
+          className="h-4 p-0"
+        >
           <PlusFilledIcon size={16} color={Color.Primary} className="stroke-white" />
           <p>Add Question</p>
         </Button>

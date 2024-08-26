@@ -1,12 +1,32 @@
 import { ChangeEvent, HTMLAttributes, KeyboardEvent, useState } from 'react';
 
 import DatePicker from '@components/common/input/date-picker.component';
+import SelectDropdown from '@components/common/input/select-dropdown.component';
 import TextArea from '@components/common/input/text-area.component';
 import TextField from '@components/common/input/text-field.component';
 import EditFilledIcon from '@components/icons/edit-filled.icon';
 import TrashOutlinedIcon from '@components/icons/trash-filled.icon';
 import { AnamnesisQuestionType, IAnamnesisFormQuestion } from '@libs/types/anamnesis.type';
 import { Color } from '@libs/types/color.type';
+
+const QUESTION_TYPE_OPTIONS = [
+  {
+    label: 'Short Text',
+    value: AnamnesisQuestionType.ShortText,
+  },
+  {
+    label: 'Long Text',
+    value: AnamnesisQuestionType.LongText,
+  },
+  {
+    label: 'Date Time',
+    value: AnamnesisQuestionType.DateTime,
+  },
+  {
+    label: 'Multiple Choice',
+    value: AnamnesisQuestionType.MultipleChoice,
+  },
+];
 
 interface IAnamnesisFormQuestionFieldProps extends HTMLAttributes<HTMLDivElement> {
   type: string;
@@ -31,11 +51,15 @@ const AnamnesisFormQuestionField = ({ type }: IAnamnesisFormQuestionFieldProps) 
 interface IAnamnesisFormQuestionProps extends HTMLAttributes<HTMLDivElement> {
   question: IAnamnesisFormQuestion;
   onChangeQuestion: (value: string) => void;
+  onChangeQuestionType: (value: string) => void;
+  onDeleteQuestion: () => void;
 }
 
 const AnamnesisFormQuestion = ({
   question,
   onChangeQuestion,
+  onChangeQuestionType,
+  onDeleteQuestion,
   className = '',
 }: IAnamnesisFormQuestionProps) => {
   const [isEditQuestion, setIsEditQuestion] = useState(true);
@@ -49,7 +73,7 @@ const AnamnesisFormQuestion = ({
   return (
     <div className={`flex flex-grow gap-2 ${className}`}>
       <div className="flex flex-col flex-grow gap-2">
-        <div className="flex items-center flex-grow ">
+        <div className="flex items-center justify-between flex-grow gap-2 ">
           {isEditQuestion ? (
             <TextField
               className="flex-grow"
@@ -61,13 +85,28 @@ const AnamnesisFormQuestion = ({
           ) : (
             <div className="flex items-center gap-2">
               <label className="leading-[40px]">{question.question}</label>
-              <EditFilledIcon role="button" color={Color.Primary} size={16} />
+              <EditFilledIcon
+                role="button"
+                color={Color.Primary}
+                size={16}
+                onClick={() => setIsEditQuestion(true)}
+              />
             </div>
           )}
+          <SelectDropdown<string>
+            value={question.type}
+            options={QUESTION_TYPE_OPTIONS}
+            onChange={onChangeQuestionType}
+          />
         </div>
         <AnamnesisFormQuestionField type={question.type} />
       </div>
-      <TrashOutlinedIcon role="button" className="fill-red-700 h-10" size={16} />
+      <TrashOutlinedIcon
+        role="button"
+        className="fill-red-700 h-10"
+        size={16}
+        onClick={onDeleteQuestion}
+      />
     </div>
   );
 };

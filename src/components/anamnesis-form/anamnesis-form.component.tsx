@@ -147,8 +147,24 @@ const AnamnesisForm = ({ initialData }: IProps) => {
     }));
   };
 
+  const handleDeleteQuestion = (sectionId: string, questionId: string) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections: prev.sections.map((section: IAnamnesisFormSection) => {
+        if (section.id !== sectionId) return section;
+
+        const questions = section.questions.filter(({ id }) => id !== questionId);
+        return { ...section, questions };
+      }),
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
-    <form className="flex flex-col gap-3">
+    <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       <TextField
         label="Title"
         name="title"
@@ -167,7 +183,7 @@ const AnamnesisForm = ({ initialData }: IProps) => {
         <header className="flex items-center justify-between">
           <h4 className="text-lg font-medium">Sections</h4>
         </header>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col">
           {form.sections.length === 0 && (
             <div className="flex flex-col items-center gap-3 p-3">
               <img src={NotFoundWebp} alt="No Section" width={200} height={200} />
@@ -184,7 +200,7 @@ const AnamnesisForm = ({ initialData }: IProps) => {
                   <Sortable.DragHandle />
                   <AnamnesisFormSection
                     section={section}
-                    className="mb-6"
+                    className="mb-8"
                     onChangeSectionName={handleChangeSectionName}
                     onAddQuestion={() => handleAddQuestion(section.id)}
                     onChangeQuestion={(questionId: string, value: string) =>
@@ -195,6 +211,9 @@ const AnamnesisForm = ({ initialData }: IProps) => {
                     }
                     onSwapQuestion={(questions: IAnamnesisFormQuestion[]) =>
                       handleSwapQuestion(section.id, questions)
+                    }
+                    onDeleteQuestion={(questionId: string) =>
+                      handleDeleteQuestion(section.id, questionId)
                     }
                     onDeleteSection={() => handleDeleteSection(section.id)}
                   />
