@@ -8,6 +8,7 @@ import { Sortable } from '@components/common/sortable/sortable.component';
 import PlusFilledIcon from '@components/icons/plus-filled.icon';
 import SaveFilledIcon from '@components/icons/save-filled.component';
 import useForm from '@libs/hooks/use-form.hook';
+import useLocalStorage from '@libs/hooks/use-local-storage.hook';
 import {
   AnamnesisQuestionType,
   IAnamnesisFormData,
@@ -15,7 +16,11 @@ import {
   IAnamnesisFormSection,
 } from '@libs/types/anamnesis.type';
 import { Color } from '@libs/types/color.type';
+import { FormArrayElError, FormFieldError } from '@libs/types/form.type';
 
+import { ANAMNESIS_STORAGE_KEY } from '@constants/key.constant';
+
+import { anamnesisFormValidator } from './anamnesis-form.util';
 import AnamnesisFormSection from './anamnesis-form-section.component';
 
 import NotFoundWebp from '@assets/not-found.webp';
@@ -25,12 +30,13 @@ interface IProps {
 }
 
 const AnamnesisForm = ({ initialData }: IProps) => {
-  const { form, setForm } = useForm<IAnamnesisFormData>({
+  const { form, errors, setForm, handleSubmit } = useForm<IAnamnesisFormData>({
     initialData: initialData || {
       title: '',
       description: '',
       sections: [],
     },
+    validator: anamnesisFormValidator,
   });
 
   const onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,18 +165,21 @@ const AnamnesisForm = ({ initialData }: IProps) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [currentAnamnesisForms = [], storeAnamnesisForms] =
+    useLocalStorage<IAnamnesisFormData[]>(ANAMNESIS_STORAGE_KEY);
+  const onSubmit = async (payload: IAnamnesisFormData) => {
+    storeAnamnesisForms([...currentAnamnesisForms, payload]);
   };
 
   return (
-    <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
       <TextField
         label="Title"
         name="title"
         placeholder="Enter anamnesis form title"
         value={form.title}
         onChange={onTextChange}
+        error={(errors.title as FormFieldError)?.required as string}
       />
       <TextField
         label="Description"
@@ -178,6 +187,7 @@ const AnamnesisForm = ({ initialData }: IProps) => {
         placeholder="Enter anamnesis form description"
         value={form.description}
         onChange={onTextChange}
+        error={(errors.description as FormFieldError)?.required as string}
       />
       <section className="pt-2 flex flex-col gap-3">
         <header className="flex items-center justify-between">
@@ -195,12 +205,13 @@ const AnamnesisForm = ({ initialData }: IProps) => {
               id="anamnesis"
               items={form.sections}
               onChange={handleSwapSection}
-              renderItem={(section: IAnamnesisFormSection) => (
+              renderItem={(section: IAnamnesisFormSection, idx: number) => (
                 <Sortable.Item key={section.id} id={section.id}>
                   <Sortable.DragHandle />
                   <AnamnesisFormSection
                     section={section}
                     className="mb-8"
+                    errors={(errors?.sections as FormArrayElError)?.[idx]}
                     onChangeSectionName={handleChangeSectionName}
                     onAddQuestion={() => handleAddQuestion(section.id)}
                     onChangeQuestion={(questionId: string, value: string) =>
@@ -228,7 +239,7 @@ const AnamnesisForm = ({ initialData }: IProps) => {
           <PlusFilledIcon color={Color.Primary} />
           Add Section
         </Button>
-        <Button type="submit" theme={Button.Theme.Primary} onClick={handleAddSection}>
+        <Button type="submit" theme={Button.Theme.Primary}>
           <SaveFilledIcon className="fill-white" />
           Save
         </Button>

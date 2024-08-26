@@ -8,11 +8,13 @@ import PlusFilledIcon from '@components/icons/plus-filled.icon';
 import TrashOutlinedIcon from '@components/icons/trash-filled.icon';
 import { IAnamnesisFormQuestion, IAnamnesisFormSection } from '@libs/types/anamnesis.type';
 import { Color } from '@libs/types/color.type';
+import { FormArrayElError, FormError, FormFieldError } from '@libs/types/form.type';
 
 import AnamnesisFormQuestion from './anamnesis-form-question.component';
 
 interface IProps extends HTMLAttributes<HTMLDivElement> {
   section: IAnamnesisFormSection;
+  errors: FormError;
   onChangeSectionName: (id: string, value: string) => void;
   onAddQuestion: () => void;
   onChangeQuestion: (questionId: string, value: string) => void;
@@ -24,6 +26,7 @@ interface IProps extends HTMLAttributes<HTMLDivElement> {
 
 const AnamnesisFormSection = ({
   section,
+  errors,
   onChangeSectionName,
   onAddQuestion,
   onChangeQuestion,
@@ -56,6 +59,7 @@ const AnamnesisFormSection = ({
             value={sectionName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSectionName(e.target.value)}
             onKeyDown={handleEnterSectionName}
+            error={(errors?.name as FormFieldError)?.required as string}
           />
         ) : (
           <div className="flex gap-2 items-center">
@@ -75,16 +79,17 @@ const AnamnesisFormSection = ({
           onClick={() => onDeleteSection()}
         />
       </header>
-      <div className="p-6 rounded-md bg-slate-100 drop-shadow-md flex flex-col">
+      <div className="p-6 rounded-md bg-white drop-shadow-md flex flex-col">
         <Sortable<IAnamnesisFormQuestion>
           id={section.id}
           items={section.questions}
           onChange={onSwapQuestion}
-          renderItem={(question: IAnamnesisFormQuestion) => (
+          renderItem={(question: IAnamnesisFormQuestion, idx: number) => (
             <Sortable.Item key={question.id} id={question.id}>
               <Sortable.DragHandle />
               <AnamnesisFormQuestion
                 className="mb-6 pb-6 border-b"
+                errors={(errors?.questions as FormArrayElError)?.[idx] || {}}
                 question={question}
                 onChangeQuestion={(value: string) => onChangeQuestion(question.id, value)}
                 onChangeQuestionType={(type: string) => onChangeQuestionType(question.id, type)}

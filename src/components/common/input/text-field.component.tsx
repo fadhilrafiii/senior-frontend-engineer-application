@@ -27,7 +27,7 @@ const TextField = ({
       <div className="relative h-10">
         <input
           {...props}
-          className={`peer border border-slate-500 text-sm w-full h-full outline-none rounded-md px-3 py-2 disabled:bg-slate-100 disabled:border-slate-200 disabled:text-slate-300 ${EndIcon ? 'pr-8' : ''} ${StartIcon ? 'pl-8' : ''}`}
+          className={`peer border ${error ? 'border-red-700 bg-red-50' : 'border-slate-500'} text-sm w-full h-full outline-none rounded-md px-3 py-2 disabled:bg-slate-100 disabled:border-slate-200 disabled:text-slate-300 ${EndIcon ? 'pr-8' : ''} ${StartIcon ? 'pl-8' : ''}`}
         />
         {StartIcon && (
           <StartIcon
