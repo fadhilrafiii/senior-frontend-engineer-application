@@ -30,7 +30,7 @@ const Layout = () => {
   return (
     <div className="w-full flex">
       <Sidebar />
-      <div className="flex-grow flex flex-col p-8 gap-8">
+      <div className="flex-grow flex flex-col p-8 pl-[292px] gap-8">
         <h1 className="text-2xl font-semibold">{title}</h1>
         <main className="flex-grow">
           <Outlet />

@@ -10,7 +10,7 @@ import Table from '@components/common/table/table.component';
 import EyeOutlineIcon from '@components/icons/eye-outlined.icon';
 import PlusFilledIcon from '@components/icons/plus-filled.icon';
 import SearchOutlinedIcon from '@components/icons/search-outlined.icon';
-import TrashOutlinedIcon from '@components/icons/trash-outlined.icon';
+import TrashOutlinedIcon from '@components/icons/trash-filled.icon';
 import useDebounce from '@libs/hooks/use-debounce.hook';
 import useLocalStorage from '@libs/hooks/use-local-storage.hook';
 import { IAnamnesisForm } from '@libs/types/anamnesis.type';

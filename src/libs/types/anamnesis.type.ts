@@ -6,6 +6,7 @@ export enum AnamnesisQuestionType {
 }
 
 export interface IAnamnesisFormQuestion {
+  id: string;
   type: AnamnesisQuestionType;
   question: string;
   choices?: string[];

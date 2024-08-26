@@ -4,9 +4,16 @@ import { v4 as uuid } from 'uuid';
 
 import Button from '@components/common/button/button.component';
 import TextField from '@components/common/input/text-field.component';
+import { Sortable } from '@components/common/sortable/sortable.component';
 import PlusFilledIcon from '@components/icons/plus-filled.icon';
+import SaveFilledIcon from '@components/icons/save-filled.component';
 import useForm from '@libs/hooks/use-form.hook';
-import { IAnamnesisFormData, IAnamnesisFormSection } from '@libs/types/anamnesis.type';
+import {
+  AnamnesisQuestionType,
+  IAnamnesisFormData,
+  IAnamnesisFormQuestion,
+  IAnamnesisFormSection,
+} from '@libs/types/anamnesis.type';
 import { Color } from '@libs/types/color.type';
 
 import AnamnesisFormSection from './anamnesis-form-section.component';
@@ -53,6 +60,93 @@ const AnamnesisForm = ({ initialData }: IProps) => {
     }));
   };
 
+  const handleSwapSection = (sections: IAnamnesisFormSection[]) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections,
+    }));
+  };
+
+  const handleAddQuestion = (sectionId: string) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections: prev.sections.map((section: IAnamnesisFormSection) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              questions: [
+                ...section.questions,
+                { id: uuid(), type: AnamnesisQuestionType.ShortText, question: '' },
+              ],
+            }
+          : section,
+      ),
+    }));
+  };
+
+  const handleChangeQuestion = (sectionId: string, questionId: string, value: string) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections: prev.sections.map((section: IAnamnesisFormSection) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          questions: section.questions.map((question: IAnamnesisFormQuestion) => {
+            if (question.id !== questionId) return question;
+
+            return {
+              ...question,
+              question: value,
+            };
+          }),
+        };
+      }),
+    }));
+  };
+
+  const handleChangeQuestionType = (sectionId: string, questionId: string, value: string) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections: prev.sections.map((section: IAnamnesisFormSection) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          questions: section.questions.map((question: IAnamnesisFormQuestion) => {
+            if (question.id !== questionId) return question;
+
+            return {
+              ...question,
+              type: value as AnamnesisQuestionType,
+            };
+          }),
+        };
+      }),
+    }));
+  };
+
+  const handleSwapQuestion = (sectionId: string, questions: IAnamnesisFormQuestion[]) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections: prev.sections.map((section: IAnamnesisFormSection) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          questions,
+        };
+      }),
+    }));
+  };
+
+  const handleDeleteSection = (sectionId: string) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections: prev.sections.filter((section: IAnamnesisFormSection) => section.id !== sectionId),
+    }));
+  };
+
   return (
     <form className="flex flex-col gap-3">
       <TextField
@@ -72,10 +166,6 @@ const AnamnesisForm = ({ initialData }: IProps) => {
       <section className="pt-2 flex flex-col gap-3">
         <header className="flex items-center justify-between">
           <h4 className="text-lg font-medium">Sections</h4>
-          <Button type="button" theme={Button.Theme.Secondary} onClick={handleAddSection}>
-            <PlusFilledIcon color={Color.Primary} />
-            Add Section
-          </Button>
         </header>
         <div className="flex flex-col gap-6">
           {form.sections.length === 0 && (
@@ -84,16 +174,46 @@ const AnamnesisForm = ({ initialData }: IProps) => {
               <p>No section added yet!</p>
             </div>
           )}
-          {form.sections.length > 0 &&
-            form.sections.map((section: IAnamnesisFormSection) => (
-              <AnamnesisFormSection
-                key={section.id}
-                section={section}
-                onChangeSectionName={handleChangeSectionName}
-              />
-            ))}
+          {form.sections.length > 0 && (
+            <Sortable<IAnamnesisFormSection>
+              id="anamnesis"
+              items={form.sections}
+              onChange={handleSwapSection}
+              renderItem={(section: IAnamnesisFormSection) => (
+                <Sortable.Item key={section.id} id={section.id}>
+                  <Sortable.DragHandle />
+                  <AnamnesisFormSection
+                    section={section}
+                    className="mb-6"
+                    onChangeSectionName={handleChangeSectionName}
+                    onAddQuestion={() => handleAddQuestion(section.id)}
+                    onChangeQuestion={(questionId: string, value: string) =>
+                      handleChangeQuestion(section.id, questionId, value)
+                    }
+                    onChangeQuestionType={(questionId: string, type: string) =>
+                      handleChangeQuestionType(section.id, questionId, type)
+                    }
+                    onSwapQuestion={(questions: IAnamnesisFormQuestion[]) =>
+                      handleSwapQuestion(section.id, questions)
+                    }
+                    onDeleteSection={() => handleDeleteSection(section.id)}
+                  />
+                </Sortable.Item>
+              )}
+            />
+          )}
         </div>
       </section>
+      <div className="flex items-center justify-end gap-4">
+        <Button type="button" theme={Button.Theme.Secondary} onClick={handleAddSection}>
+          <PlusFilledIcon color={Color.Primary} />
+          Add Section
+        </Button>
+        <Button type="submit" theme={Button.Theme.Primary} onClick={handleAddSection}>
+          <SaveFilledIcon className="fill-white" />
+          Save
+        </Button>
+      </div>
     </form>
   );
 };
