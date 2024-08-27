@@ -104,6 +104,7 @@ const AnamnesisListPage = () => {
           EndIcon={SearchOutlinedIcon}
         />
         <Link
+          data-testid="create-anamnesis-button"
           to="/anamnesis/create"
           className="flex bg-primary items-center gap-2 h-10 rounded-md px-3 text-white text-sm"
         >

@@ -12,6 +12,7 @@ export default {
   moduleNameMapper: {
     '^@(components|libs)(.*)$': '<rootDir>/src/$1$2',
   },
-  coveragePathIgnorePatterns: ['/_tests_/'],
+  coveragePathIgnorePatterns: ['<rootDir>/e2e-testing'],
+  modulePathIgnorePatterns: ['<rootDir>/e2e-testing'],
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
 };

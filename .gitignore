@@ -25,3 +25,7 @@ dist-ssr
 
 # Unit Test
 coverage
+
+# E2E Testing
+playwright-report
+test-results
