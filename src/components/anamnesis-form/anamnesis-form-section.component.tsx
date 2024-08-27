@@ -22,6 +22,8 @@ interface IProps extends HTMLAttributes<HTMLDivElement> {
   onSwapQuestion: (questions: IAnamnesisFormQuestion[]) => void;
   onDeleteQuestion: (questionId: string) => void;
   onDeleteSection: () => void;
+  onAddChoice: (sectionId: string, questionId: string) => void;
+  onChangeChoice: (sectionId: string, questionId: string, choiceIdx: number, value: string) => void;
 }
 
 const AnamnesisFormSection = ({
@@ -34,6 +36,8 @@ const AnamnesisFormSection = ({
   onSwapQuestion,
   onDeleteQuestion,
   onDeleteSection,
+  onAddChoice,
+  onChangeChoice,
   className = '',
 }: IProps) => {
   const [canEditSectionName, setCanEditSectionName] = useState(true);
@@ -95,6 +99,10 @@ const AnamnesisFormSection = ({
                 onChangeQuestion={(value: string) => onChangeQuestion(question.id, value)}
                 onChangeQuestionType={(type: string) => onChangeQuestionType(question.id, type)}
                 onDeleteQuestion={() => onDeleteQuestion(question.id)}
+                onAddChoice={(questionId: string) => onAddChoice(section.id, questionId)}
+                onChangeChoice={(questionId: string, choiceIdx: number, value: string) =>
+                  onChangeChoice(section.id, questionId, choiceIdx, value)
+                }
               />
             </Sortable.Item>
           )}

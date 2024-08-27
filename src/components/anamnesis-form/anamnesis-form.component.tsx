@@ -127,6 +127,7 @@ const AnamnesisForm = ({ initialData }: IProps) => {
             return {
               ...question,
               type: value as AnamnesisQuestionType,
+              choices: value === AnamnesisQuestionType.MultipleChoice ? ['Option 1'] : undefined,
             };
           }),
         };
@@ -163,6 +164,59 @@ const AnamnesisForm = ({ initialData }: IProps) => {
 
         const questions = section.questions.filter(({ id }) => id !== questionId);
         return { ...section, questions };
+      }),
+    }));
+  };
+
+  const handleAddQuestionChoice = (sectionId: string, questionId: string) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections: prev.sections.map((section: IAnamnesisFormSection) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          questions: section.questions.map((question: IAnamnesisFormQuestion) => {
+            if (question.id !== questionId) return question;
+
+            return {
+              ...question,
+              choices: [
+                ...(question.choices || []),
+                `Option ${(question.choices?.length || 0) + 1}`,
+              ],
+            };
+          }),
+        };
+      }),
+    }));
+  };
+
+  const handleChangeQuestionChoice = (
+    sectionId: string,
+    questionId: string,
+    choiceIdx: number,
+    value: string,
+  ) => {
+    setForm((prev: IAnamnesisFormData) => ({
+      ...prev,
+      sections: prev.sections.map((section: IAnamnesisFormSection) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          questions: section.questions.map((question: IAnamnesisFormQuestion) => {
+            if (question.id !== questionId) return question;
+
+            return {
+              ...question,
+              choices: question.choices?.map((choice: string, idx: number) => {
+                if (idx === choiceIdx) return value;
+                return choice;
+              }),
+            };
+          }),
+        };
       }),
     }));
   };
@@ -233,6 +287,8 @@ const AnamnesisForm = ({ initialData }: IProps) => {
                     onChangeQuestionType={(questionId: string, type: string) =>
                       handleChangeQuestionType(section.id, questionId, type)
                     }
+                    onAddChoice={handleAddQuestionChoice}
+                    onChangeChoice={handleChangeQuestionChoice}
                     onSwapQuestion={(questions: IAnamnesisFormQuestion[]) =>
                       handleSwapQuestion(section.id, questions)
                     }

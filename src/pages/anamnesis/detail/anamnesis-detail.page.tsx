@@ -37,8 +37,13 @@ const AnamnesisDetailPage = () => {
             <div className="flex flex-col gap-6 p-6 rounded-md drop-shadow-md bg-white">
               {section.questions.map((question: IAnamnesisFormQuestion) => (
                 <div key={question.id}>
-                  <label className="text-sm">{question.question}</label>
-                  <AnamnesisFormQuestionField type={question.type} />
+                  <label className="text-sm font-medium">{question.question}</label>
+                  <AnamnesisFormQuestionField
+                    id={question.id}
+                    type={question.type}
+                    choices={question.choices}
+                    disableEdit
+                  />
                 </div>
               ))}
             </div>

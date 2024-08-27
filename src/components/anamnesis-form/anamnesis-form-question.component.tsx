@@ -35,6 +35,8 @@ interface IProps extends HTMLAttributes<HTMLDivElement> {
   onChangeQuestion: (value: string) => void;
   onChangeQuestionType: (value: string) => void;
   onDeleteQuestion: () => void;
+  onChangeChoice: (questionId: string, choiceIdx: number, value: string) => void;
+  onAddChoice: (questionId: string) => void;
 }
 
 const AnamnesisFormQuestion = ({
@@ -43,6 +45,8 @@ const AnamnesisFormQuestion = ({
   onChangeQuestion,
   onChangeQuestionType,
   onDeleteQuestion,
+  onChangeChoice,
+  onAddChoice,
   className = '',
 }: IProps) => {
   const [isEditQuestion, setIsEditQuestion] = useState(true);
@@ -84,7 +88,15 @@ const AnamnesisFormQuestion = ({
             onChange={onChangeQuestionType}
           />
         </div>
-        <AnamnesisFormQuestionField type={question.type} />
+        <AnamnesisFormQuestionField
+          id={question.id}
+          type={question.type}
+          choices={question.choices}
+          onAddChoice={() => onAddChoice(question.id)}
+          onChangeChoice={(choiceIdx: number, val: string) =>
+            onChangeChoice(question.id, choiceIdx, val)
+          }
+        />
       </div>
       <TrashOutlinedIcon
         role="button"
