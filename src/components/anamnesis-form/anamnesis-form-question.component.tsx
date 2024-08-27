@@ -1,14 +1,14 @@
 import { ChangeEvent, HTMLAttributes, KeyboardEvent, useState } from 'react';
 
-import DatePicker from '@components/common/input/date-picker.component';
 import SelectDropdown from '@components/common/input/select-dropdown.component';
-import TextArea from '@components/common/input/text-area.component';
 import TextField from '@components/common/input/text-field.component';
 import EditFilledIcon from '@components/icons/edit-filled.icon';
 import TrashOutlinedIcon from '@components/icons/trash-filled.icon';
 import { AnamnesisQuestionType, IAnamnesisFormQuestion } from '@libs/types/anamnesis.type';
 import { Color } from '@libs/types/color.type';
 import { FormError, FormFieldError } from '@libs/types/form.type';
+
+import AnamnesisFormQuestionField from './anamnesis-form-question-field.component';
 
 const QUESTION_TYPE_OPTIONS = [
   {
@@ -29,27 +29,7 @@ const QUESTION_TYPE_OPTIONS = [
   },
 ];
 
-interface IAnamnesisFormQuestionFieldProps extends HTMLAttributes<HTMLDivElement> {
-  type: string;
-  // onChangeChoice: string;
-}
-
-const AnamnesisFormQuestionField = ({ type }: IAnamnesisFormQuestionFieldProps) => {
-  switch (type) {
-    case AnamnesisQuestionType.ShortText:
-      return <TextField placeholder="This is the Answer Field" />;
-    case AnamnesisQuestionType.LongText:
-      return <TextArea placeholder="This is the Answer Field" />;
-    case AnamnesisQuestionType.DateTime:
-      return <DatePicker />;
-    case AnamnesisQuestionType.MultipleChoice:
-      return <div>Multiple Choice</div>;
-    default:
-      return <TextField />;
-  }
-};
-
-interface IAnamnesisFormQuestionProps extends HTMLAttributes<HTMLDivElement> {
+interface IProps extends HTMLAttributes<HTMLDivElement> {
   question: IAnamnesisFormQuestion;
   errors: FormError;
   onChangeQuestion: (value: string) => void;
@@ -64,7 +44,7 @@ const AnamnesisFormQuestion = ({
   onChangeQuestionType,
   onDeleteQuestion,
   className = '',
-}: IAnamnesisFormQuestionProps) => {
+}: IProps) => {
   const [isEditQuestion, setIsEditQuestion] = useState(true);
 
   const actionClickEnterOnQuestion = (e: KeyboardEvent<HTMLInputElement>) => {

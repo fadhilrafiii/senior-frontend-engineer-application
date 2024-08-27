@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
 
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import ChevronLeftOutlinedIcon from '@components/icons/chevron-left-outlined.icon';
+import { Color } from '@libs/types/color.type';
 import { IMenu } from '@libs/types/menu.type';
 import { getTitleCase } from '@libs/utils/string.util';
 
@@ -12,7 +14,8 @@ import Sidebar from './sidebar.component';
 import './layout.component.scss';
 
 const Layout = () => {
-  const { pathname } = useLocation();
+  const { pathname, key } = useLocation();
+  const navigate = useNavigate();
 
   const title = useMemo(() => {
     const splittedPathname = pathname.slice(1).split('/').slice(-3);
@@ -29,11 +32,22 @@ const Layout = () => {
     return `${mainTitle}${detailPath || action ? ' - ' : ''}${action || ''} ${detailPath || ''}`;
   }, [pathname]);
 
+  const canGoBack = key !== 'default';
+
   return (
     <div className="w-full flex min-h-[90vh]">
       <Sidebar />
       <div className="flex-grow flex flex-col p-8 pl-[292px] gap-8">
-        <h1 className="text-2xl font-semibold">{title}</h1>
+        <div className="flex items-center gap-4">
+          {canGoBack && (
+            <ChevronLeftOutlinedIcon
+              color={Color.Primary}
+              role="button"
+              onClick={() => navigate(-1)}
+            />
+          )}
+          <h1 className="text-2xl font-semibold">{title}</h1>
+        </div>
         <main className="flex-grow flex flex-col">
           <Outlet />
         </main>
