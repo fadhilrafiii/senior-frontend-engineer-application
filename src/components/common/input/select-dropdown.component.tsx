@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { HTMLAttributes, useRef, useState } from 'react';
 
 import ChevronDownOutlinedIcon from '@components/icons/chevron-down-outlined.component';
 import ChevronUpOutlinedIcon from '@components/icons/chevron-up-outlined.icon';
@@ -10,13 +10,20 @@ interface IOption<T> {
   value: T;
 }
 
-interface IProps<T> {
+interface IProps<T> extends HTMLAttributes<HTMLDivElement> {
   value?: T;
   options: IOption<T>[];
   onChange: (val: T) => void;
+  position?: 'top' | 'bottom';
 }
 
-const SelectDropdown = <T,>({ value, options = [], onChange }: IProps<T>) => {
+const SelectDropdown = <T,>({
+  value,
+  position = 'bottom',
+  options = [],
+  className = '',
+  onChange,
+}: IProps<T>) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,13 +33,13 @@ const SelectDropdown = <T,>({ value, options = [], onChange }: IProps<T>) => {
 
   const handleSelect = (value: T) => {
     onChange(value);
-    containerRef.current?.blur();
+    setIsDropdownOpen(false);
   };
 
   return (
     <div
       ref={containerRef}
-      className="relative"
+      className={`relative ${className}`}
       tabIndex={-1}
       onClick={() => actionClickSelect()}
       onFocus={() => setIsDropdownOpen(true)}
@@ -45,7 +52,9 @@ const SelectDropdown = <T,>({ value, options = [], onChange }: IProps<T>) => {
         EndIcon={isDropdownOpen ? ChevronUpOutlinedIcon : ChevronDownOutlinedIcon}
       />
       {isDropdownOpen && (
-        <ul className="absolute top-full z-10 bg-primary py-2 w-full mt-1 rounded-md">
+        <ul
+          className={`absolute ${position === 'top' ? 'bottom-full mb-1' : 'mt-1 top-full'}  z-50 bg-primary py-2 w-full rounded-md`}
+        >
           {options.map((opt: IOption<T>) => (
             <li
               key={opt.label}

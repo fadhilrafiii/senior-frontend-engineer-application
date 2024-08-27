@@ -7,6 +7,7 @@ import IconButton from '@components/common/button/icon-button.component';
 import TextField from '@components/common/input/text-field.component';
 import ConfirmationModal from '@components/common/modal/confirmation-modal.component';
 import Table from '@components/common/table/table.component';
+import EditFilledIcon from '@components/icons/edit-filled.icon';
 import EyeOutlineIcon from '@components/icons/eye-outlined.icon';
 import PlusFilledIcon from '@components/icons/plus-filled.icon';
 import SearchOutlinedIcon from '@components/icons/search-outlined.icon';
@@ -75,6 +76,9 @@ const AnamnesisListPage = () => {
               <div className="flex items-center justify-center gap-2">
                 <Link to={row.original.id}>
                   <IconButton Icon={EyeOutlineIcon} theme={IconButton.Theme.Secondary} />
+                </Link>
+                <Link to={`${row.original.id}/edit`}>
+                  <IconButton Icon={EditFilledIcon} theme={IconButton.Theme.Secondary} />
                 </Link>
                 <IconButton
                   Icon={TrashOutlinedIcon}

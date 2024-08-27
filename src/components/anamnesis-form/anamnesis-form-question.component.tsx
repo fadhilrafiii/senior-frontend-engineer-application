@@ -34,7 +34,7 @@ interface IAnamnesisFormQuestionFieldProps extends HTMLAttributes<HTMLDivElement
   // onChangeChoice: string;
 }
 
-const AnamnesisFormQuestionField = ({ type, errors }: IAnamnesisFormQuestionFieldProps) => {
+const AnamnesisFormQuestionField = ({ type }: IAnamnesisFormQuestionFieldProps) => {
   switch (type) {
     case AnamnesisQuestionType.ShortText:
       return <TextField placeholder="This is the Answer Field" />;
@@ -69,6 +69,7 @@ const AnamnesisFormQuestion = ({
 
   const actionClickEnterOnQuestion = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       setIsEditQuestion(false);
     }
   };
@@ -83,7 +84,7 @@ const AnamnesisFormQuestion = ({
               placeholder="Input Question (Press Enter to Commit)"
               value={question.question}
               onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeQuestion(e.target.value)}
-              onKeyUp={actionClickEnterOnQuestion}
+              onKeyDown={actionClickEnterOnQuestion}
               error={(errors?.question as FormFieldError)?.required as string}
             />
           ) : (

@@ -9,6 +9,8 @@ import { MENUS } from '@constants/menu.constant';
 
 import Sidebar from './sidebar.component';
 
+import './layout.component.scss';
+
 const Layout = () => {
   const { pathname } = useLocation();
 
@@ -28,11 +30,11 @@ const Layout = () => {
   }, [pathname]);
 
   return (
-    <div className="w-full flex">
+    <div className="w-full flex min-h-[90vh]">
       <Sidebar />
       <div className="flex-grow flex flex-col p-8 pl-[292px] gap-8">
         <h1 className="text-2xl font-semibold">{title}</h1>
-        <main className="flex-grow">
+        <main className="flex-grow flex flex-col">
           <Outlet />
         </main>
       </div>

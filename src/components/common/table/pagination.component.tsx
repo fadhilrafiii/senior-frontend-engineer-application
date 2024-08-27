@@ -1,8 +1,8 @@
-import { ChangeEvent } from 'react';
-
 import IconButton from '@components/common/button/icon-button.component';
 import ChevronLeftOutlinedIcon from '@components/icons/chevron-left-outlined.icon';
 import ChevronRightOutlinedIcon from '@components/icons/chevron-right-outlined.icon';
+
+import SelectDropdown from '../input/select-dropdown.component';
 
 interface IProps {
   currentPage: number;
@@ -33,6 +33,7 @@ const Pagination = ({
           disabled={!canGoBack}
           size={16}
           theme={IconButton.Theme.Secondary}
+          onClick={() => onChangePage(currentPage - 2)}
         />
         <div className="flex items-center gap-1">
           <span className="text-sm">Page</span>
@@ -54,21 +55,22 @@ const Pagination = ({
           disabled={!canGoNext}
           size={16}
           theme={IconButton.Theme.Secondary}
+          onClick={() => onChangePage(currentPage)}
         />
       </div>
       <div className="flex items-center gap-1">
         <span className="text-sm">Showing</span>
-        <select
-          className="text-sm"
+        <SelectDropdown<number>
+          className="w-16"
+          position="top"
           value={pageSize}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) => onChangePageSize(Number(e.target.value))}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {pageSize}
-            </option>
-          ))}
-        </select>
+          options={[10, 20, 30, 40, 50].map((pageSize: number) => ({
+            label: pageSize.toString(),
+            value: pageSize,
+          }))}
+          onChange={onChangePageSize}
+        />
+
         <span className="text-sm">of {totalData} Data</span>
       </div>
     </div>

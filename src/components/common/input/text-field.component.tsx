@@ -44,7 +44,7 @@ const TextField = ({
           />
         )}
       </div>
-      {error && <span className="text-red-700 text-sm">{error}</span>}
+      {error && <span className="text-red-700 text-xs">{error}</span>}
       {helperText && <span className="text-slate-600 text-sm">{helperText}</span>}
     </div>
   );

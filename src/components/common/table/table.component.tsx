@@ -84,7 +84,7 @@ const Table = <T,>({ columns, data }: IProps<T>) => {
                   style={{
                     minWidth: header.column.getSize(),
                   }}
-                  className="font-medium px-2 py-4 text-sm border border-primary bg-primary text-white"
+                  className="font-medium p-4 text-sm border border-primary bg-primary text-white"
                 >
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
@@ -119,7 +119,7 @@ const Table = <T,>({ columns, data }: IProps<T>) => {
                       style={{
                         width: cell.column.getSize(),
                       }}
-                      className="px-2 py-4 text-sm"
+                      className="p-4 text-sm"
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>

@@ -27,6 +27,7 @@ export interface IAnamnesisForm {
 }
 
 export interface IAnamnesisFormData {
+  id?: string;
   title: string;
   description: string;
   sections: IAnamnesisFormSection[];

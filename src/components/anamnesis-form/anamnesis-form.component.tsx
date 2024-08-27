@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 
 import Button from '@components/common/button/button.component';
@@ -30,6 +31,7 @@ interface IProps {
 }
 
 const AnamnesisForm = ({ initialData }: IProps) => {
+  const navigate = useNavigate();
   const { form, errors, setForm, handleSubmit } = useForm<IAnamnesisFormData>({
     initialData: initialData || {
       title: '',
@@ -167,8 +169,19 @@ const AnamnesisForm = ({ initialData }: IProps) => {
 
   const [currentAnamnesisForms = [], storeAnamnesisForms] =
     useLocalStorage<IAnamnesisFormData[]>(ANAMNESIS_STORAGE_KEY);
+
   const onSubmit = async (payload: IAnamnesisFormData) => {
-    storeAnamnesisForms([...currentAnamnesisForms, payload]);
+    const isEdit = !!initialData;
+    if (isEdit) {
+      storeAnamnesisForms(
+        currentAnamnesisForms.map((anamnesisForm: IAnamnesisFormData) => {
+          if (anamnesisForm.id === initialData.id) return payload;
+
+          return anamnesisForm;
+        }),
+      );
+    } else storeAnamnesisForms([...currentAnamnesisForms, { id: uuid(), ...payload }]);
+    navigate('/anamnesis');
   };
 
   return (

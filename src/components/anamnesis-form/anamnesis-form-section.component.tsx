@@ -37,10 +37,11 @@ const AnamnesisFormSection = ({
   className = '',
 }: IProps) => {
   const [canEditSectionName, setCanEditSectionName] = useState(true);
-  const [sectionName, setSectionName] = useState('');
+  const [sectionName, setSectionName] = useState(section.name || '');
 
   const handleEnterSectionName = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       setCanEditSectionName(false);
     }
   };
