@@ -32,6 +32,7 @@ const TextField = ({
         {StartIcon && (
           <StartIcon
             size={16}
+            data-testid={`start_icon_${props.id}`}
             color={Color.Primary}
             className="fill-slate-500 peer-disabled:fill-slate-300 absolute top-1/2 -translate-y-1/2 left-3"
           />
@@ -39,13 +40,22 @@ const TextField = ({
         {EndIcon && (
           <EndIcon
             size={16}
+            data-testid={`end_icon_${props.id}`}
             color={Color.Primary}
             className="fill-slate-500 peer-disabled:fill-slate-300 absolute top-1/2 -translate-y-1/2 right-3"
           />
         )}
       </div>
-      {error && <span className="text-red-700 text-xs">{error}</span>}
-      {helperText && <span className="text-slate-600 text-sm">{helperText}</span>}
+      {error && (
+        <span data-testid={`error_${props.id}`} className="text-red-700 text-xs">
+          {error}
+        </span>
+      )}
+      {helperText && (
+        <span data-testid={`helper_${props.id}`} className="text-slate-600 text-sm">
+          {helperText}
+        </span>
+      )}
     </div>
   );
 };

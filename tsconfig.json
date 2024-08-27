@@ -22,7 +22,8 @@
       "@libs/*": ["src/libs/*"],
       "@constants/*": ["src/constants/*"],
       "@assets/*": ["src/assets/*"]
-    }
+    },
+    "types": ["jest", "node"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
